@@ -1,189 +1,74 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const app = express()
-app.use(bodyParser.json());
-const mongoose = require("mongoose");
-const port = 3000;
+var express = require("express");
+var data = require('./data');
+const body_parser = require('body-parser');
 
-const Product = require("./product");
+var app = express();
+app.use(body_parser.json());
 
-var mongoDB = 'mongodb://127.0.0.1:27017/test';
-mongoose.connect(mongoDB, { useNewUrlParser: true }, (error)=> {
-	if (!error) {
-		console.log("Successfully connected");
-	}
+
+app.listen(3001, () => {
+console.log("Server running on port 3001");
 });
 
-//Get the default connection
-var db = mongoose.connection;
-
-//Bind connection to error event (to get notification of connection errors)
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-app.get("/", (req, res, next) => {
-	res.send('Hello World!');
-});
-
-// Fetch alll the records
-app.get("/all", (req, res, next) => {
-	Product.find()
-	  .exec()
-	  .then(docs => {
-		console.log(docs);
-		//   if (docs.length >= 0) {
-		res.status(200).json(docs);
-		//   } else {
-		//       res.status(404).json({
-		//           message: 'No entries found'
-		//       });
-		//   }
-	  })
-	  .catch(err => {
-		console.log(err);
-		res.status(500).json({
-		  error: err
-		});
-	  });
-  });
-
-
-// Enter a record
-app.post("/", (req, res, next) => {
-	const product = new Product({
-	  _id: new mongoose.Types.ObjectId(),
-	  name: req.body.name,
-	  price: req.body.price
-	});
-	product
-	  .save()
-	  .then(result => {
-		console.log(result);
-		res.status(201).json({
-		  message: "Handling POST requests to /products",
-		  createdProduct: result
-		});
-	  })
-	  .catch(err => {
-		console.log(err);
-		res.status(500).json({
-		  error: err
-		});
-	  });
-  });
-
-
-// Fetch a record by a given id
-app.get("/:id", (req, res, next) => {
-	const id = req.params.id;
-	Product.findById(id)
-	  .exec()
-	  .then(doc => {
-		console.log("From database", doc);
-		if (doc) {
-		  res.status(200).json(doc);
-		} else {
-		  res
-			.status(404)
-			.json({ message: "No valid entry found for provided ID" });
-		}
-	  })
-	  .catch(err => {
-		console.log(err);
-		res.status(500).json({ error: err });
-	  });
-});
-
-// delete a record
-app.delete("/delete/record", (req, res, next) => {
-	const id = req.body.id;
-	console.log(id);
-	Product.remove({ _id: id })
-	  .exec()
-	  .then(result => {
-		res.status(200).json(result);
-	  })
-	  .catch(err => {
-		console.log(err);
-		res.status(500).json({
-		  error: err
-		});
-	  });
-  });
-
-  // update a record
-  app.put("/update/record", (req, res, next) => {
-	const id = req.body.id;
-	const updateOps = {};
-	updateOps["name"] = req.body.name;
-	updateOps["value"] = req.body.price;
-
-	Product.update({ _id: id }, { $set: updateOps })
-	  .exec()
-	  .then(result => {
-		console.log(result);
-		res.status(200).json(result);
-	  })
-	  .catch(err => {
-		console.log(err);
-		res.status(500).json({
-		  error: err
-		});
-	  });
-  });
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
-app.delete("/delete/record", (req, res, next) => {
-  const id = req.body.id;
-  console.log(id);
-  Product.remove({ _id: id })
-    .exec()
-    .then(result => {
-    res.status(200).json(result);
-    })
-    .catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
+app.get("/items", (req, res) => {
+    res.json(data);
     });
-    });
-  });
-  
-  app.put("/update/record", (req, res, next) => {
-  const id = req.body.id;
-  const updateOps = {};
-  updateOps["name"] = req.body.name;
-  updateOps["price"] = req.body.price;
 
-  Product.update({ _id: id }, { $set: updateOps })
-    .exec()
-    .then(result => {
-    console.log(result);
-    res.status(200).json(result);
-    })
-    .catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
-    });
-    });
-  });
+    app.get("/items/:id", (req, res) => {
+        const itemId = req.params.id;
+        const item = data.find(_item => _item.id === itemId);
+    
+        if (item) {
+            res.json(item);
+        } else {
+            res.json({ message: `item ${itemId} doesn't exist`})
+        }
+        });
+    
+        app.post("/items", (req, res) => {
+            const item = req.body;
+            console.log('Adding new item: ', item);
+        
+            // add new item to array
+            data.push(item)
+        
+            // return updated list
+            res.json(data);
+            });
+        
+            app.put("/items/:id", (req, res) => {
+                const itemId = req.params.id;
+                const item = req.body;
+                console.log("Editing item: ", itemId, " to be ", item);
+            
+                const updatedListItems = [];
+                // loop through list to find and replace one item
+                data.forEach(oldItem => {
+                    if (oldItem.id === itemId) {
+                        updatedListItems.push(item);
+                    } else {
+                        updatedListItems.push(oldItem);
+                    }
+                });
+            
+                // replace old list with new one
+                data = updatedListItems;
+            
+                res.json(data);
+                });
 
-  
- 
-  
-
-  
-  
-  
-  
-
-  
-  
-  
-  
-  
-  
-  
-
-  
-  
+                app.delete("/items/:id", (req, res) => {
+                    const itemId = req.params.id;
+                
+                    console.log("Delete item with id: ", itemId);
+                
+                    // filter list copy, by excluding item to delete
+                    const filtered_list = data.filter(item => item.id !== itemId);
+                
+                    // replace old list with new one
+                    data = filtered_list;
+                
+                    res.json(data);
+                    });
+                
+            
