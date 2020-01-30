@@ -1,0 +1,64 @@
+curl -X POST -H "Content-Type: application/json" --data '{"id": "5678", "name": "Forrest Gump", "price": "12345"}' http://localhost:3004/
+curl: (7) Failed to connect to localhost port 3004: Connection refused
+fsmk@fsmk-pc:~/project$ curl -X POST -H "Content-Type: application/json" --data '{"id": "5678", "name": "Forrest Gump", "price": "12345"}' http://localhost:3000/
+{"message":"Handling POST requests to /products","createdProduct":{"_id":"5e32abfd514a0425bf3feb66","name":"Forrest Gump"fsmk@fsmk-pc:~/project$ curl -X DELETE http://localhost:3000/5e32abfd514a0425bf3feb66<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot DELETE /5e32abfd514a0425bf3feb66</pre>
+</body>
+</html>
+fsmk@fsmk-pc:~/project$ curl -X DELETE http://localhost:3000/1234                    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot DELETE /1234</pre>
+</body>
+</html>
+fsmk@fsmk-pc:~/project$ curl -X DELETE -H "Content-Type: application/json" --data '{"id":"5e32872418261120b3c621f6"}' http://localhost:3000/delete/record
+fsmk@fsmk-pc:~/project$ curl -X POST -H "Content-Type: application/json" --data '{"id": "5643", "name": "Forrest Gump", "price": "12345"}' http://localhost:3000/
+{"message":"Handling POST requests to /products","createdProduct":{"_id":"5e32b06582eb4f26f8ec416b","name":"Forrest Gump"fsmk@fsmk-pc:~/project$ curl -X POST -H "Content-Type: application/json" --data '{"id": "1243", "name": "Forrest Gump", "price": "12345"}' http://localhost:3000/
+{"message":"Handling POST requests to /products","createdProduct":{"_id":"5e32b07382eb4f26f8ec416c","name":"Forrest Gump"fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "5e32b07382eb4f26f8ec416c", "name": "The Dark Knight", "price": "34000"}' http://localhost:3000/5e32b07382eb4f26f8ec416c<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot PUT /5e32b07382eb4f26f8ec416c</pre>
+</body>
+</html>
+fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "9101", "name": "The Dark Knight", "price": "890"}' http://localhost:3000/9101
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot PUT /9101</pre>
+</body>
+</html>
+fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "9101", "name": "The Dark Knight", "price": "890"}' http://localhost:3000/    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Cannot PUT /</pre>
+</body>
+</html>
+fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "9101", "name": "The Dark Knight", "price": "890"}' http://localhost:3000/update/record
+{"error":{"stringValue":"\"9101\"","kind":"ObjectId","value":"9101","path":"_id","reason":{},"message":"Cast to ObjectId fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "5e32abfd514a0425bf3feb66", "name": "The Dark Knight", "price": "0987"}' http://localhost:4000/update/record
+curl: (7) Failed to connect to localhost port 4000: Connection refused
+fsmk@fsmk-pc:~/project$ curl -X PUT -H "Content-Type: application/json" --data '{"id": "5e32abfd514a0425bf3feb66", "name": "The Dark Knight", "price": "0987"}' http://localhost:3000/update/record
+{"n":1,"nModified":1,"ok":1}fsmk@fsmk-pc:~/project$ curl -X DELETE -H "Content-Type: application/json" --data '{"id":"5e3p://localhost:3000/delete/record
+fsmk@fsmk-pc:~/project$ curl -X DELETE -H "Content-Type: application/json" --data '{"id":"5e32abfd514a0425bf3feb66"}' http://localhost:3000/delete/record
+{"n":1,"ok":1,"deletedCount":1}fsmk@fsmk-pc:~/project$  
