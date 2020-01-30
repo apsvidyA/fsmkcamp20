@@ -1,0 +1,34 @@
+<!DOCTYPE html> 
+<html>
+    <head>
+        <title>
+            FSMK  Camp
+        </title>
+    </head>
+    <body>
+
+
+        <div id='app'>
+            
+            <!-- <p>{{message}}</p>
+            <button v-on:click='counter++'>{{counter}}</button>
+             -->
+             <p v-if="show">I can see you if true</p>
+             <p v-else>you see me if false</p>
+             <button v-on:mouseover="show=!show">switch</button>
+                    </div>
+        <!-- <h1>{{ message }}</h1> -->
+<!--         <button >Hello FSMK Camp 2020</button>
+ -->        <script src="vue.js"></script>
+        <script>
+            Vue.config.devtools = true
+        new Vue({
+            el:'#app',
+            data: {
+                show:true
+               /*  message: "Hello FSMK Camp 2020",
+                counter: */
+            }
+        });</script>
+    </body>
+</html>
